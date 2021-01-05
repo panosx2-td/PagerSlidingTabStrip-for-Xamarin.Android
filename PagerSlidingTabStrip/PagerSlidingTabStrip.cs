@@ -3,39 +3,33 @@ using Android.Widget;
 using Android.Database;
 using Android.Content.Res;
 using Android.Graphics;
-using Android.Support.V4.View;
 using Android.Util;
 using Android.Content;
 using Android.Views;
 using Android.Runtime;
 using Android.OS;
 using Java.Interop;
+using AndroidX.ViewPager.Widget;
 
 //version 1.0.9
 
-namespace com.refractored
-{
+namespace com.refractored {
     [Register("com.refractored.PagerSlidingTabStrip")]
-    public class PagerSlidingTabStrip : HorizontalScrollView, Android.Support.V4.View.ViewPager.IOnPageChangeListener, ViewTreeObserver.IOnGlobalLayoutListener
-    {
-
+    public class PagerSlidingTabStrip: HorizontalScrollView, ViewPager.IOnPageChangeListener, ViewTreeObserver.IOnGlobalLayoutListener {
         /// <summary>
         /// Gets or sets the page change listener
         /// </summary>
-        public Android.Support.V4.View.ViewPager.IOnPageChangeListener OnPageChangeListener { get; set; }
+        public ViewPager.IOnPageChangeListener OnPageChangeListener { get; set; }
         /// <summary>
         /// Gets or sets the tab reselected listener
         /// </summary>
         public IOnTabReselectedListener OnTabReselectedListener { get; set; }
 
-
-
-        private static int[] Attrs = new int[]
-        {
+        private static int[] Attrs = new int[] {
             Android.Resource.Attribute.TextColorPrimary,
             Android.Resource.Attribute.TextSize,
             Android.Resource.Attribute.TextColor,
-      Android.Resource.Attribute.Padding,
+            Android.Resource.Attribute.Padding,
             Android.Resource.Attribute.PaddingLeft,
             Android.Resource.Attribute.PaddingRight
         };
@@ -67,26 +61,21 @@ namespace com.refractored
         /// <summary>
         /// Gets or sets the indicator color
         /// </summary>
-        public int IndicatorColor
-        {
+        public int IndicatorColor {
             get { return indicatorColor; }
-            set
-            {
+            set {
                 indicatorColor = value;
                 Invalidate();
             }
         }
 
-
         private int indicatorHeight = 2;
         /// <summary>
         /// Gets or sets the indicator height
         /// </summary>
-        public int IndicatorHeight
-        {
+        public int IndicatorHeight {
             get { return indicatorHeight; }
-            set
-            {
+            set {
                 indicatorHeight = value;
                 Invalidate();
             }
@@ -96,11 +85,9 @@ namespace com.refractored
         /// <summary>
         /// Gets or sets the underline height
         /// </summary>
-        public int UnderlineHeight
-        {
+        public int UnderlineHeight {
             get { return underlineHeight; }
-            set
-            {
+            set {
                 underlineHeight = value;
                 Invalidate();
             }
@@ -109,11 +96,9 @@ namespace com.refractored
         /// <summary>
         /// Gets or sets the underline color
         /// </summary>
-        public int UnderlineColor
-        {
+        public int UnderlineColor {
             get { return underlineColor; }
-            set
-            {
+            set {
                 underlineColor = value;
                 Invalidate();
             }
@@ -123,11 +108,9 @@ namespace com.refractored
         /// <summary>
         /// gets or sets the divider width
         /// </summary>
-        public int DividerWidth
-        {
+        public int DividerWidth {
             get { return dividerWidth; }
-            set
-            {
+            set {
                 dividerWidth = value;
                 Invalidate();
             }
@@ -137,11 +120,9 @@ namespace com.refractored
         /// <summary>
         /// gets or sets the divider padding
         /// </summary>
-        public int DividerPadding
-        {
+        public int DividerPadding {
             get { return dividerPadding; }
-            set
-            {
+            set {
                 dividerPadding = value;
                 Invalidate();
             }
@@ -150,11 +131,9 @@ namespace com.refractored
         /// <summary>
         /// gets or sets the divider color
         /// </summary>
-        public int DividerColor
-        {
+        public int DividerColor {
             get { return dividerColor; }
-            set
-            {
+            set {
                 dividerColor = value;
                 Invalidate();
             }
@@ -164,11 +143,9 @@ namespace com.refractored
         /// <summary>
         /// Gets or sets padding left
         /// </summary>
-        public int TabPaddingLeftRight
-        {
+        public int TabPaddingLeftRight {
             get { return tabPadding; }
-            set
-            {
+            set {
                 tabPadding = value;
                 UpdateTabStyles();
             }
@@ -177,11 +154,9 @@ namespace com.refractored
         /// <summary>
         /// Gets or sets text size
         /// </summary>
-        public int TabTextSize
-        {
+        public int TabTextSize {
             get { return tabTextSize; }
-            set
-            {
+            set {
                 tabTextSize = value;
                 UpdateTabStyles();
             }
@@ -191,11 +166,9 @@ namespace com.refractored
         /// <summary>
         /// Gets or sets the text alpha
         /// </summary>
-        public int TextAlpha
-        {
+        public int TextAlpha {
             get { return textAlpha; }
-            set
-            {
+            set {
                 textAlpha = value;
                 Invalidate();
             }
@@ -205,11 +178,9 @@ namespace com.refractored
         /// <summary>
         /// Gets or sets the inactive text color
         /// </summary>
-        public ColorStateList TabTextColorSelected
-        {
+        public ColorStateList TabTextColorSelected {
             get { return tabTextColorSelected; }
-            set
-            {
+            set {
                 tabTextColorSelected = value;
                 Invalidate();
             }
@@ -219,34 +190,27 @@ namespace com.refractored
         /// <summary>
         /// Gets or sets tab text color
         /// </summary>
-        public ColorStateList TabTextColor
-        {
+        public ColorStateList TabTextColor {
             get { return tabTextColor; }
-            set
-            {
+            set {
                 tabTextColor = value;
                 UpdateTabStyles();
             }
         }
 
-        public void SetTabTextColor(int textColor)
-        {
+        public void SetTabTextColor(int textColor) {
             TabTextColor = GetColorStateList(textColor);
         }
 
-        public void SetTextColorResource(int resId)
-        {
+        public void SetTextColorResource(int resId) {
             TabTextColor = GetColorStateList(Resources.GetColor(resId));
         }
 
-        public void SetTabTextColorListResource(int resId)
-        {
+        public void SetTabTextColorListResource(int resId) {
             TabTextColor = Resources.GetColorStateList(resId);
         }
 
-
-        private ColorStateList GetColorStateList(int textColor)
-        {
+        private ColorStateList GetColorStateList(int textColor) {
             return new ColorStateList(new int[][] { new int[] { } }, new int[] { textColor });
         }
 
@@ -257,22 +221,18 @@ namespace com.refractored
         /// <summary>
         /// Gets or sets if should expand
         /// </summary>
-        public bool ShouldExpand
-        {
+        public bool ShouldExpand {
             get { return shouldExpand; }
-            set
-            {
+            set {
                 shouldExpand = value;
                 if (pager != null)
                     RequestLayout();
             }
         }
         private bool textAllCaps = true;
-        public bool TextAllCaps
-        {
+        public bool TextAllCaps {
             get { return textAllCaps; }
-            set
-            {
+            set {
                 textAllCaps = value;
             }
         }
@@ -280,11 +240,9 @@ namespace com.refractored
         /// <summary>
         /// Gets or sets is padding middle
         /// </summary>
-        public bool IsPaddingMiddle
-        {
+        public bool IsPaddingMiddle {
             get { return isPaddingMiddle; }
-            set
-            {
+            set {
                 isPaddingMiddle = value;
                 Invalidate();
             }
@@ -296,8 +254,7 @@ namespace com.refractored
         /// </summary>
         /// <param name="typeFace"></param>
         /// <param name="style"></param>
-        public void SetTypeface(Typeface typeFace, TypefaceStyle style)
-        {
+        public void SetTypeface(Typeface typeFace, TypefaceStyle style) {
             this.tabTypeface = typeFace;
             this.tabTypefaceSelectedStyle = style;
             UpdateTabStyles();
@@ -310,11 +267,9 @@ namespace com.refractored
         /// <summary>
         /// Sets the scrolloffset
         /// </summary>
-        public int ScrollOffset
-        {
+        public int ScrollOffset {
             get { return scrollOffset; }
-            set
-            {
+            set {
                 scrollOffset = value;
                 Invalidate();
             }
@@ -325,11 +280,9 @@ namespace com.refractored
         /// <summary>
         /// Sets tab background
         /// </summary>
-        public int TabBackground
-        {
+        public int TabBackground {
             get { return tabBackgroundResId; }
-            set
-            {
+            set {
                 tabBackgroundResId = value;
             }
         }
@@ -338,18 +291,15 @@ namespace com.refractored
 
 
         public PagerSlidingTabStrip(Context context)
-            : this(context, null)
-        {
+            : this(context, null) {
         }
 
         public PagerSlidingTabStrip(Context context, IAttributeSet attrs)
-            : this(context, attrs, 0)
-        {
+            : this(context, attrs, 0) {
         }
 
         public PagerSlidingTabStrip(Context context, IAttributeSet attrs, int defStyle)
-            : base(context, attrs, defStyle)
-        {
+            : base(context, attrs, defStyle) {
             MyOnGlobalLayoutListner = new MyOnGlobalLayoutListener(this);
             adapterObserver = new PagerAdapterObserver(this);
             FillViewport = true;
@@ -430,19 +380,16 @@ namespace com.refractored
         }
 
 
-        private void SetMarginBottomTabContainer()
-        {
+        private void SetMarginBottomTabContainer() {
             var mlp = (MarginLayoutParams)tabsContainer.LayoutParameters;
             var bottomMargin = indicatorHeight >= underlineHeight ? indicatorHeight : underlineHeight;
             mlp.SetMargins(mlp.LeftMargin, mlp.TopMargin, mlp.RightMargin, bottomMargin);
             tabsContainer.LayoutParameters = mlp;
         }
 
-        public void SetViewPager(ViewPager pager)
-        {
+        public void SetViewPager(ViewPager pager) {
             this.pager = pager;
-            if (pager.Adapter == null)
-            {
+            if (pager.Adapter == null) {
                 throw new ArgumentNullException("ViewPager does not have adapter instance.");
             }
 
@@ -452,20 +399,15 @@ namespace com.refractored
             NotifyDataSetChanged();
         }
 
-        public void NotifyDataSetChanged()
-        {
+        public void NotifyDataSetChanged() {
             tabsContainer.RemoveAllViews();
             tabCount = pager.Adapter.Count;
             View tabView;
-            for (int i = 0; i < tabCount; i++)
-            {
+            for (int i = 0; i < tabCount; i++) {
 
-                if (pager.Adapter is ICustomTabProvider)
-                {
+                if (pager.Adapter is ICustomTabProvider) {
                     tabView = ((ICustomTabProvider)pager.Adapter).GetCustomTabView(this, i);
-                }
-                else
-                {
+                } else {
                     tabView = LayoutInflater.From(Context).Inflate(Resource.Layout.psts_tab, this, false);
                 }
 
@@ -482,16 +424,13 @@ namespace com.refractored
 
         protected MyOnGlobalLayoutListener MyOnGlobalLayoutListner { get; set; }
 
-        protected class MyOnGlobalLayoutListener : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener
-        {
+        protected class MyOnGlobalLayoutListener: Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener {
             PagerSlidingTabStrip strip;
-            public MyOnGlobalLayoutListener(PagerSlidingTabStrip strip)
-            {
+            public MyOnGlobalLayoutListener(PagerSlidingTabStrip strip) {
                 this.strip = strip;
             }
             #region IOnGlobalLayoutListener implementation
-            public void OnGlobalLayout()
-            {
+            public void OnGlobalLayout() {
 
                 strip.RemoveGlobals();
             }
@@ -499,41 +438,30 @@ namespace com.refractored
 
         }
 
-        private void RemoveGlobals()
-        {
-            if ((int)Build.VERSION.SdkInt < 16)
-            {
+        private void RemoveGlobals() {
+            if ((int)Build.VERSION.SdkInt < 16) {
                 ViewTreeObserver.RemoveGlobalOnLayoutListener(MyOnGlobalLayoutListner);
-            }
-            else
-            {
+            } else {
                 ViewTreeObserver.RemoveOnGlobalLayoutListener(MyOnGlobalLayoutListner);
             }
         }
 
-        private void AddTab(int position, string title, View tabView)
-        {
+        private void AddTab(int position, string title, View tabView) {
             var textView = tabView.FindViewById<TextView>(Resource.Id.psts_tab_title);
-            if (textView != null)
-            {
-                if (title != null)
-                {
+            if (textView != null) {
+                if (title != null) {
                     textView.Text = title;
                 }
             }
 
             tabView.Focusable = true;
 
-            tabView.Click += (object sender, EventArgs e) =>
-            {
-                if (pager.CurrentItem != position)
-                {
+            tabView.Click += (object sender, EventArgs e) => {
+                if (pager.CurrentItem != position) {
                     var tab = tabsContainer.GetChildAt(pager.CurrentItem);
                     NotSelected(tab);
                     pager.SetCurrentItem(position, true);
-                }
-                else if (OnTabReselectedListener != null)
-                {
+                } else if (OnTabReselectedListener != null) {
                     OnTabReselectedListener.OnTabReselected(position);
                 }
             };
@@ -541,10 +469,8 @@ namespace com.refractored
             tabsContainer.AddView(tabView, position, shouldExpand ? expandedTabLayoutParams : defaultTabLayoutParams);
         }
 
-        private void UpdateTabStyles()
-        {
-            for (int i = 0; i < tabCount; i++)
-            {
+        private void UpdateTabStyles() {
+            for (int i = 0; i < tabCount; i++) {
                 var v = tabsContainer.GetChildAt(i);
                 if (v == null)
                     continue;
@@ -552,20 +478,15 @@ namespace com.refractored
                 v.SetPadding(tabPadding, v.PaddingTop, tabPadding, v.PaddingBottom);
                 var tab_title = v.FindViewById<TextView>(Resource.Id.psts_tab_title);
 
-                if (tab_title != null)
-                {
+                if (tab_title != null) {
                     tab_title.SetTextSize(ComplexUnitType.Px, tabTextSize);
 
                     // setAllCaps() is only available from API 14, so the upper case is made manually if we are on a
                     // pre-ICS-build
-                    if (textAllCaps)
-                    {
-                        if ((int)Build.VERSION.SdkInt >= 14)
-                        {
+                    if (textAllCaps) {
+                        if ((int)Build.VERSION.SdkInt >= 14) {
                             tab_title.SetAllCaps(true);
-                        }
-                        else
-                        {
+                        } else {
                             tab_title.Text = tab_title.Text.ToUpperInvariant();
                         }
                     }
@@ -573,16 +494,14 @@ namespace com.refractored
             }
         }
 
-        private void ScrollToChild(int position, int offset)
-        {
+        private void ScrollToChild(int position, int offset) {
             if (tabCount == 0)
                 return;
             var child = tabsContainer.GetChildAt(position);
             if (child == null)
                 return;
             int newScrollX = child.Left + offset;
-            if (position > 0 || offset > 0)
-            {
+            if (position > 0 || offset > 0) {
 
                 //Half screen offset.
                 //- Either tabs start at the middle of the view scrolling straight away
@@ -594,15 +513,13 @@ namespace com.refractored
                 newScrollX += (int)((second - first) / 2f);
             }
 
-            if (newScrollX != lastScrollX)
-            {
+            if (newScrollX != lastScrollX) {
                 lastScrollX = newScrollX;
                 ScrollTo(newScrollX, 0);
             }
         }
 
-        private void GetIndicatorCoordinates(out float lineLeft, out float lineRight)
-        {
+        private void GetIndicatorCoordinates(out float lineLeft, out float lineRight) {
             lineLeft = 0f;
             lineRight = 0f;
             var currentTab = tabsContainer.GetChildAt(currentPosition);
@@ -612,8 +529,7 @@ namespace com.refractored
             lineRight = currentTab.Right;
 
             // if there is an offset, start interpolating left and right coordinates between current and next tab
-            if (currentPositionOffset > 0f && currentPosition < tabCount - 1)
-            {
+            if (currentPositionOffset > 0f && currentPosition < tabCount - 1) {
 
                 View nextTab = tabsContainer.GetChildAt(currentPosition + 1);
                 float nextTabLeft = nextTab.Left;
@@ -624,36 +540,28 @@ namespace com.refractored
             }
         }
 
-        protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
-        {
-            if (isPaddingMiddle || paddingLeft > 0 || paddingRight > 0)
-            {
+        protected override void OnLayout(bool changed, int left, int top, int right, int bottom) {
+            if (isPaddingMiddle || paddingLeft > 0 || paddingRight > 0) {
                 tabsContainer.SetMinimumWidth(Width);
                 SetClipToPadding(false);
             }
 
-            if (tabsContainer.ChildCount > 0)
-            {
+            if (tabsContainer.ChildCount > 0) {
                 tabsContainer.GetChildAt(0).ViewTreeObserver.AddOnGlobalLayoutListener(this);
             }
             base.OnLayout(changed, left, top, right, bottom);
         }
 
-        public void OnGlobalLayout()
-        {
+        public void OnGlobalLayout() {
             var view = tabsContainer.GetChildAt(0);
 
-            if ((int)Build.VERSION.SdkInt < 16)
-            {
+            if ((int)Build.VERSION.SdkInt < 16) {
                 ViewTreeObserver.RemoveGlobalOnLayoutListener(this);
-            }
-            else
-            {
+            } else {
                 ViewTreeObserver.RemoveOnGlobalLayoutListener(this);
             }
 
-            if (isPaddingMiddle)
-            {
+            if (isPaddingMiddle) {
                 int halfWidthFirstTab = view.Width / 2;
                 paddingLeft = paddingRight = Width / 2 - halfWidthFirstTab;
             }
@@ -671,8 +579,7 @@ namespace com.refractored
 
 
 
-        protected override void OnDraw(Canvas canvas)
-        {
+        protected override void OnDraw(Canvas canvas) {
             base.OnDraw(canvas);
             if (IsInEditMode || tabCount == 0)
                 return;
@@ -697,11 +604,9 @@ namespace com.refractored
 
             var offset = IsPaddingMiddle ? paddingLeft : 0F;
 
-            for (int i = 0; i < tabCount - 1; i++)
-            {
+            for (int i = 0; i < tabCount - 1; i++) {
                 var tab = tabsContainer.GetChildAt(i);
-                if (tab != null)
-                {
+                if (tab != null) {
                     canvas.DrawLine(offset + tab.Right, dividerPadding, offset + tab.Right, height - dividerPadding, dividerPaint);
 
                 }
@@ -711,8 +616,7 @@ namespace com.refractored
 
 
         #region IOnPageChangeListener Implentation
-        public void OnPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-        {
+        public void OnPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             currentPosition = position;
             currentPositionOffset = positionOffset;
             var child = tabsContainer.GetChildAt(position);
@@ -721,75 +625,61 @@ namespace com.refractored
             var offset = tabCount > 0 ? (int)(positionOffset * child.Width) : 0;
             ScrollToChild(position, offset);
             Invalidate();
-            if (OnPageChangeListener != null)
-            {
+            if (OnPageChangeListener != null) {
                 OnPageChangeListener.OnPageScrolled(position, positionOffset, positionOffsetPixels);
             }
         }
 
-        public void OnPageScrollStateChanged(int state)
-        {
-            if (state == ViewPager.ScrollStateIdle)
-            {
+        public void OnPageScrollStateChanged(int state) {
+            if (state == ViewPager.ScrollStateIdle) {
                 ScrollToChild(pager.CurrentItem, 0);
             }
             //Full textAlpha for current item
             var currentTab = tabsContainer.GetChildAt(pager.CurrentItem);
             Selected(currentTab);
             //Half transparent for prev item
-            if (pager.CurrentItem - 1 >= 0)
-            {
+            if (pager.CurrentItem - 1 >= 0) {
                 var prevTab = tabsContainer.GetChildAt(pager.CurrentItem - 1);
                 NotSelected(prevTab);
             }
             //Half transparent for next item
-            if (pager.CurrentItem + 1 <= pager.Adapter.Count - 1)
-            {
+            if (pager.CurrentItem + 1 <= pager.Adapter.Count - 1) {
                 View nextTab = tabsContainer.GetChildAt(pager.CurrentItem + 1);
                 NotSelected(nextTab);
             }
 
-            if (OnPageChangeListener != null)
-            {
+            if (OnPageChangeListener != null) {
                 OnPageChangeListener.OnPageScrollStateChanged(state);
             }
         }
 
 
 
-        public void OnPageSelected(int position)
-        {
+        public void OnPageSelected(int position) {
             UpdateSelection(position);
-            if (OnPageChangeListener != null)
-            {
+            if (OnPageChangeListener != null) {
                 OnPageChangeListener.OnPageSelected(position);
             }
         }
         #endregion
 
-        private void UpdateSelection(int position)
-        {
-            for (int i = 0; i < tabCount; ++i)
-            {
+        private void UpdateSelection(int position) {
+            for (int i = 0; i < tabCount; ++i) {
                 var tv = tabsContainer.GetChildAt(i);
                 if (tv == null)
                     continue;
 
                 var selected = i == position;
                 tv.Selected = selected;
-                if (selected)
-                {
+                if (selected) {
                     Selected(tv);
-                }
-                else
-                {
+                } else {
                     NotSelected(tv);
                 }
             }
         }
 
-        void NotSelected(View tab)
-        {
+        void NotSelected(View tab) {
             if (tab == null)
                 return;
 
@@ -801,8 +691,7 @@ namespace com.refractored
             title.SetTextColor(tabTextColor);
         }
 
-        void Selected(View tab)
-        {
+        void Selected(View tab) {
             if (tab == null)
                 return;
 
@@ -817,22 +706,18 @@ namespace com.refractored
 
 
 
-        protected class PagerAdapterObserver : DataSetObserver
-        {
+        protected class PagerAdapterObserver: DataSetObserver {
             public bool IsAttached { get; set; }
             PagerSlidingTabStrip strip;
-            public PagerAdapterObserver(PagerSlidingTabStrip strip)
-            {
+            public PagerAdapterObserver(PagerSlidingTabStrip strip) {
                 this.strip = strip;
             }
-            public override void OnChanged()
-            {
+            public override void OnChanged() {
                 strip.NotifyDataSetChanged();
             }
         }
 
-        protected override void OnAttachedToWindow()
-        {
+        protected override void OnAttachedToWindow() {
             base.OnAttachedToWindow();
             if (pager == null || !adapterObserver.IsAttached)
                 return;
@@ -841,18 +726,15 @@ namespace com.refractored
             adapterObserver.IsAttached = false;
         }
 
-        protected override void OnRestoreInstanceState(IParcelable state)
-        {
+        protected override void OnRestoreInstanceState(IParcelable state) {
             var bundle = state as Bundle;
-            if (bundle != null)
-            {
+            if (bundle != null) {
                 var superState = bundle.GetParcelable("base") as IParcelable;
                 if (superState != null)
                     base.OnRestoreInstanceState(superState);
 
                 currentPosition = bundle.GetInt("currentPosition", 0);
-                if (currentPosition != 0 && tabsContainer.ChildCount > 0)
-                {
+                if (currentPosition != 0 && tabsContainer.ChildCount > 0) {
                     NotSelected(tabsContainer.GetChildAt(0));
                     Selected(tabsContainer.GetChildAt(currentPosition));
                 }
@@ -861,8 +743,7 @@ namespace com.refractored
             RequestLayout();
         }
 
-        protected override IParcelable OnSaveInstanceState()
-        {
+        protected override IParcelable OnSaveInstanceState() {
             var superState = base.OnSaveInstanceState();
             var state = new Bundle();
             state.PutParcelable("base", superState);
@@ -873,8 +754,7 @@ namespace com.refractored
         /// <summary>
         /// The state saved by an instance of PagerSlidingTabStrip during orientation changes etc.
         /// </summary>
-        public class PagerSlidingTabStripState : BaseSavedState
-        {
+        public class PagerSlidingTabStripState: BaseSavedState {
             /// <summary>
             /// Gets or sets the current position.
             /// </summary>
@@ -888,14 +768,11 @@ namespace com.refractored
             /// </summary>
             /// <param name="superState">State of the super.</param>
             public PagerSlidingTabStripState(IParcelable superState)
-              : base(superState)
-            {
-
+              : base(superState) {
             }
 
             public PagerSlidingTabStripState(Parcel source)
-              : base(source)
-            {
+              : base(source) {
                 CurrentPosition = source.ReadInt();
             }
 
@@ -907,36 +784,27 @@ namespace com.refractored
             /// <param name="dest">The Parcel in which the object should be written.</param>
             /// <param name="flags">Additional flags about how the object should be written.
             /// May be 0 or <c><see cref="F:Android.OS.Parcelable.ParcelableWriteReturnValue" /></c>.</param>
-            public override void WriteToParcel(Parcel dest, ParcelableWriteFlags flags)
-            {
+            public override void WriteToParcel(Parcel dest, ParcelableWriteFlags flags) {
                 base.WriteToParcel(dest, flags);
                 dest.WriteInt(CurrentPosition);
             }
 
             [ExportField("CREATOR")]
-            static SavedStateCreator InitializeCreator()
-            {
+            static SavedStateCreator InitializeCreator() {
                 return new SavedStateCreator();
             }
 
-            class SavedStateCreator : Java.Lang.Object, IParcelableCreator
-            {
-
+            class SavedStateCreator: Java.Lang.Object, IParcelableCreator {
                 #region IParcelableCreator Members
-
-                public Java.Lang.Object CreateFromParcel(Parcel source)
-                {
+                public Java.Lang.Object CreateFromParcel(Parcel source) {
                     return new PagerSlidingTabStripState(source);
                 }
 
-                public Java.Lang.Object[] NewArray(int size)
-                {
+                public Java.Lang.Object[] NewArray(int size) {
                     return new PagerSlidingTabStripState[size];
                 }
-
                 #endregion
             }
         }
     }
 }
-
